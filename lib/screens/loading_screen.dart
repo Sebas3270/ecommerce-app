@@ -28,6 +28,8 @@ class LoadingScreen extends StatelessWidget {
     if(authenticated){
       // await getStoredTheme(context);
       // socketService.connect();
+      final cartService = Provider.of<CartService>(context, listen: false);
+      await cartService.getCart();
       Navigator.pushReplacementNamed(context, 'main');
     }else{
       Navigator.pushReplacementNamed(context, 'login');

@@ -18,6 +18,7 @@ class AppProvider extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => ScreenService()),
         ChangeNotifierProvider(create: (context) => ProductsService()),
+        ChangeNotifierProvider(create: (context) => CartService()),
       ],
       child: const MyApp(),
     );

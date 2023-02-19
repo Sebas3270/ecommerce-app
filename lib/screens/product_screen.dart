@@ -1,4 +1,5 @@
-import 'package:ecommerce_app/services/products_service.dart';
+import 'package:ecommerce_app/models/models.dart';
+import 'package:ecommerce_app/services/services.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,8 @@ class ProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final productsService = Provider.of<ProductsService>(context);
+    final screenService = Provider.of<ScreenService>(context, listen: false);
+    final cartService = Provider.of<CartService>(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -73,8 +76,11 @@ class ProductScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   
+                  await cartService.checkAdd(Item(id: 0, cartId: cartService.cart.id, productId: productsService.selectedProduct.id, quantity: 1, product: productsService.selectedProduct));
+                  screenService.currentScreen = 2;
+                  Navigator.of(context).pushNamedAndRemoveUntil("main", (route) => false,);
                 }, 
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orange,
@@ -82,9 +88,9 @@ class ProductScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(7.0)),
                   minimumSize: const Size(150, 40), //////// HERE
                 ),
-                child: const Text(
-                  'Add to cart',
-                  style: TextStyle(
+                child: Text(
+                  cartService.cartLoading ? 'Loading...' : 'Add to cart',
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
                 )

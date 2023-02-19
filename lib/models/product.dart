@@ -20,13 +20,26 @@ class Product {
 
     String toJson() => json.encode(toMap());
 
-    factory Product.fromMap(Map<String, dynamic> json) => Product(
+    factory Product.fromMap(Map<String, dynamic> json){
+
+      double price;
+
+      if(json["price"] is int){
+        price = (json["price"] as int).toDouble();
+      }else{
+        price = (json["price"] as double);
+      }
+
+      return Product(
         id: json["id"],
         name: json["name"],
-        price: json["price"],
+        price: price,
         image: json["image"],
         description: json["description"] ?? '',
-    );
+      );
+    }
+    
+    
 
     Map<String, dynamic> toMap() => {
         "id": id,

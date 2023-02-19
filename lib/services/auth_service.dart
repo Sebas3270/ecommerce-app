@@ -41,8 +41,7 @@ class AuthService extends ChangeNotifier {
       Uri.parse('${Environment.apiUrl}/auth/renew'), 
       headers: {
         'Content-Type': 'application/json',
-        // 'Accept': 'application/json',
-        'x-token': token ?? '',
+        'Authorization': 'Bearer $token',
       },
     );
 
