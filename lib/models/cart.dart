@@ -8,13 +8,11 @@ import 'package:ecommerce_app/models/models.dart';
 
 class Cart {
     Cart({
-        required this.id,
         required this.userId,
         required this.total,
         required this.items,
     });
 
-    int id;
     int userId;
     double total;
     List<Item> items;
@@ -24,14 +22,12 @@ class Cart {
     String toJson() => json.encode(toMap());
 
     factory Cart.fromMap(Map<String, dynamic> json) => Cart(
-        id: json["id"],
         userId: json["userId"],
         total: json["total"]?.toDouble(),
-        items: List<Item>.from(json["items"].map((x) => Item.fromMap(x))),
+        items: json["items"] != null ? List<Item>.from(json["items"].map((x) => Item.fromMap(x))) : [],
     );
 
     Map<String, dynamic> toMap() => {
-        "id": id,
         "userId": userId,
         "total": total,
         "items": List<dynamic>.from(items.map((x) => x.toMap())),
@@ -41,14 +37,14 @@ class Cart {
 class Item {
     Item({
         required this.id,
-        required this.cartId,
+        required this.userId,
         required this.productId,
         required this.quantity,
         required this.product,
     });
 
-    int id;
-    int cartId;
+    String id;
+    int userId;
     String productId;
     int quantity;
     Product product;
@@ -59,7 +55,7 @@ class Item {
 
     factory Item.fromMap(Map<String, dynamic> json) => Item(
         id: json["id"],
-        cartId: json["cartId"],
+        userId: json["userId"],
         productId: json["productId"],
         quantity: json["quantity"],
         product: Product.fromMap(json["product"]),
@@ -67,7 +63,7 @@ class Item {
 
     Map<String, dynamic> toMap() => {
         "id": id,
-        "cartId": cartId,
+        "userId": userId,
         "productId": productId,
         "quantity": quantity,
         "product": product.toMap(),

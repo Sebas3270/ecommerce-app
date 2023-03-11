@@ -12,6 +12,7 @@ class ProductScreen extends StatelessWidget {
 
     final productsService = Provider.of<ProductsService>(context);
     final screenService = Provider.of<ScreenService>(context, listen: false);
+    final authService = Provider.of<AuthService>(context, listen: false);
     final cartService = Provider.of<CartService>(context);
 
     return Scaffold(
@@ -43,8 +44,9 @@ class ProductScreen extends StatelessWidget {
                 )
               ),
       
-              Container(
-                child: Image.network(productsService.selectedProduct.image),
+              SizedBox(
+                height: 300,
+                child: Center(child: Image.network(productsService.selectedProduct.image)),
               ),
       
               Text(
@@ -78,12 +80,19 @@ class ProductScreen extends StatelessWidget {
               ElevatedButton(
                 onPressed: () async {
                   
-                  await cartService.checkAdd(Item(id: 0, cartId: cartService.cart.id, productId: productsService.selectedProduct.id, quantity: 1, product: productsService.selectedProduct));
+                  await cartService.checkAdd(
+                    Item(id: "", 
+                    userId:  authService.user.id,
+                    productId: productsService.selectedProduct.id, 
+                    quantity: 1, 
+                    product: productsService.selectedProduct)
+                  );
                   screenService.currentScreen = 2;
-                  Navigator.of(context).pushNamedAndRemoveUntil("main", (route) => false,);
+                  // Navigator.of(context).pushNamedAndRemoveUntil("main", (route) => false,);
+                  Navigator.of(context).pop();
                 }, 
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7.0)),
                   minimumSize: const Size(150, 40), //////// HERE

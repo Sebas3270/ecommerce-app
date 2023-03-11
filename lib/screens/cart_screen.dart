@@ -28,6 +28,26 @@ class CartScreen extends StatelessWidget {
               ),
             ),
 
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0, left: 20.0, top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Total:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700
+                    ),
+                  ),
+                  Text(cartService.cart.total.toStringAsFixed(2),
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  )
+                ],
+              ),
+            ),
+
             Expanded(
               child: cartService.cart.items.isEmpty
               ? const _EmptySearchWidget()
@@ -72,23 +92,23 @@ class _EmptySearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Column(
-          children: const [
-            Spacer(),
+          children: [
+            const Spacer(),
             Icon(
               EvaIcons.shoppingBagOutline,
               size: 180,
-              color: Colors.black12,
+              color: Theme.of(context).dividerColor,
             ),
             Text(
               'There are no products\nin your cart',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.black26, 
+                color: Theme.of(context).secondaryHeaderColor, 
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Spacer(flex: 2,)
+            const Spacer(flex: 2,)
           ],
         ),
       );

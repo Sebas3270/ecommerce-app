@@ -6,15 +6,14 @@ import 'package:http/http.dart' as http;
 
 class Api {
 
-  static Future<List<Product>> getLatestProductsApi() async{
+  static Future<List<Product>> getLatestProductsApi({ String searchTerm = "", String tagTerm = "" }) async{
 
     final resp = await http.get(
-      Uri.parse('${Environment.apiUrl}/products?limit=5'), 
+      Uri.parse('${Environment.apiUrl}/products?limit=5&begin=$searchTerm&tag=$tagTerm'), 
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      
     );
 
     if(resp.statusCode == 200){
@@ -25,40 +24,7 @@ class Api {
         return [];
       }
 
-      final products = (productsDecoded as List)
-            .map((value) => Product.fromMap(value))
-            .toList();
-
-      return products;
-
-    }else{
-      return [];
-    }
-
-  }
-
-  static Future<List<Product>> getSearchProductsApi( String searchTerm ) async{
-
-    final resp = await http.get(
-      Uri.parse('${Environment.apiUrl}/products?begin=$searchTerm'), 
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      
-    );
-
-    if(resp.statusCode == 200){
-
-      final productsDecoded = jsonDecode(resp.body);
-
-      if(productsDecoded == null){
-        return [];
-      }
-
-      final products = (productsDecoded as List)
-            .map((value) => Product.fromMap(value))
-            .toList();
+      final products = List<Product>.from(productsDecoded.map((x) => Product.fromMap(x)));
 
       return products;
 
@@ -81,7 +47,6 @@ class Api {
 
     if(resp.statusCode == 200){
       Cart cart = Cart.fromJson(resp.body);
-      print(cart);
       return cart;
     }else{
       return null;

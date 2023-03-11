@@ -20,6 +20,13 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _isAuthLoading = false;
+  bool get isAuthLoading => _isAuthLoading;
+  set isAuthLoading(bool value){
+    _isAuthLoading = value;
+    notifyListeners();
+  }
+
   static Future<String> getToken()async{
     const storage = FlutterSecureStorage();
     final token = await storage.read(key: 'token');
@@ -57,6 +64,8 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<bool> login( String email, String password ) async {
+
+    isAuthLoading = true;
 
     final data = {
       'email': email,

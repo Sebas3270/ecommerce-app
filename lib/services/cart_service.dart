@@ -5,7 +5,17 @@ import 'package:flutter/material.dart';
 
 class CartService extends ChangeNotifier {
 
-  late Cart _cart;
+  Future<void> getCart() async{
+
+    final token = await AuthService.getToken();
+    final checkCart = await Api.getCart(token);
+
+    if (checkCart != null) {
+      _cart = checkCart;
+    }
+  }
+
+  Cart _cart = Cart(userId: -1, total: 0, items: []);
   Cart get cart => _cart;
   set cart( Cart cart ){
     _cart = cart;
@@ -19,23 +29,14 @@ class CartService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getCart() async{
-
-    final token = await AuthService.getToken();
-    final checkCart = await Api.getCart(token);
-
-    if (checkCart != null) {
-      cart = checkCart;
-    }
-
-  }
-
   Future<void> deleteItem( Item item ) async{
     cartLoading = true;
     cart.items.remove(item);
     notifyListeners();
     final token = await AuthService.getToken();
-    final success = await Api.deleteItemFromCart(token, item);
+    await Api.deleteItemFromCart(token, item);
+    getCart();
+    cart.total -= item.quantity * item.product.price;
     cartLoading = false;
   }
 
@@ -57,16 +58,14 @@ class CartService extends ChangeNotifier {
     if(newItem != null){
       item.id = newItem.id;
       cart.items.add(item);
-      notifyListeners();
+      cart.total += item.quantity * item.product.price;
+      // notifyListeners();
     }
+    getCart();
     cartLoading = false;
   }
 
   Future addQuantity( int pos )async{
-    
-    // Item item = cart.items[pos];
-    // item.quantity++;
-    // cart.items[pos] = item;
     cartLoading = true;
     Item item = cart.items[pos];
     final token = await AuthService.getToken();
@@ -74,15 +73,14 @@ class CartService extends ChangeNotifier {
     if(success){
       item.quantity++;
       cart.items[pos] = item;
-      notifyListeners();
+      cart.total += item.product.price;
+      // notifyListeners();
     }
+    getCart();
     cartLoading = false;
   }
 
   Future reduceQuantity( int pos )async{
-    // Item item = cart.items[pos];
-    // item.quantity--;
-    // cart.items[pos] = item;
 
     cartLoading = true;
     Item item = cart.items[pos];
@@ -91,8 +89,10 @@ class CartService extends ChangeNotifier {
     if(success){
       item.quantity--;
       cart.items[pos] = item;
-      notifyListeners();
+      cart.total -= item.product.price;
+      // notifyListeners();
     }
+    getCart();
     cartLoading = false;
   }
 

@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/services/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -54,9 +55,30 @@ class ProfileScreen extends StatelessWidget {
             title: Text('Log Out'),
             contentPadding: EdgeInsets.symmetric(horizontal: 20),
             trailing: Icon(EvaIcons.arrowIosForwardOutline),
-            onTap: () async{
-              await authService.logOut();
-              Navigator.of(context).pushNamed('login');
+            onTap: () {
+              showCupertinoDialog(
+                context: context, 
+                builder: (context) => CupertinoAlertDialog(
+                title:  Text("Log Out"),
+                content:  Text("You sure you would like to close your session?"),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text("Yes"),
+                    onPressed: () async {
+                        await authService.logOut();
+                        Navigator.of(context).pushNamed('login');
+                    },
+                  ),
+                  CupertinoDialogAction(
+                    child: Text("No"),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+                ],
+              ),
+            );
+              
+             
             },
           ),
           

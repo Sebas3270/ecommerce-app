@@ -26,7 +26,7 @@ class ProductCard extends StatelessWidget {
       child: Container(
         // width: !fillWidth ? 150 : double.infinity,
         width: 150 ,
-        margin: !fillWidth ? EdgeInsets.only(right: 13) : EdgeInsets.zero,
+        margin: !fillWidth ? const EdgeInsets.only(right: 13) : EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -62,7 +62,7 @@ class ProductCard extends StatelessWidget {
     
             Padding(
               padding: const EdgeInsets.only(left: 7.0, bottom: 5),
-              child: Text('\$${product.price}',
+              child: Text('\$${product.price.toStringAsFixed(2)}',
                 style: Theme.of(context).textTheme.labelSmall
               ),
             ),

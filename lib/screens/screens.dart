@@ -1,3 +1,5 @@
+export 'package:ecommerce_app/screens/unlogged_main_screen.dart';
+export 'package:ecommerce_app/screens/register_screen.dart';
 export 'package:ecommerce_app/screens/login_screen.dart';
 export 'package:ecommerce_app/screens/product_screen.dart';
 export 'package:ecommerce_app/screens/loading_screen.dart';

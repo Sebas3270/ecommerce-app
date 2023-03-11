@@ -22,17 +22,14 @@ class LoadingScreen extends StatelessWidget {
   Future checkLogInState(BuildContext context) async {
     
     final authService = Provider.of<AuthService>(context, listen: false);
-    // final socketService= Provider.of<SocketService>(context, listen: false);
     final authenticated = await authService.isLogged();
 
     if(authenticated){
-      // await getStoredTheme(context);
-      // socketService.connect();
       final cartService = Provider.of<CartService>(context, listen: false);
       await cartService.getCart();
-      Navigator.pushReplacementNamed(context, 'main');
+      Navigator.pushNamedAndRemoveUntil(context, 'main', (route) => false,);
     }else{
-      Navigator.pushReplacementNamed(context, 'login');
+       Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false,);
     }
   }
 

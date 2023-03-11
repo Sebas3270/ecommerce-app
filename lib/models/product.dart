@@ -7,6 +7,7 @@ class Product {
   double price;
   String image;
   String description;
+  List<String>? tags;
 
   Product({
     required this.id,
@@ -14,31 +15,21 @@ class Product {
     required this.price,
     required this.image,
     required this.description,
+    required this.tags,
   });
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
 
     String toJson() => json.encode(toMap());
 
-    factory Product.fromMap(Map<String, dynamic> json){
-
-      double price;
-
-      if(json["price"] is int){
-        price = (json["price"] as int).toDouble();
-      }else{
-        price = (json["price"] as double);
-      }
-
-      return Product(
-        id: json["id"],
-        name: json["name"],
-        price: price,
-        image: json["image"],
-        description: json["description"] ?? '',
-      );
-    }
-    
+    factory Product.fromMap(Map<String, dynamic> json) => Product(
+      id: json["id"],
+      name: json["name"],
+      price: json["price"] is int ? (json["price"] as int).toDouble() : (json["price"] as double) ,
+      image: json["image"],
+      description: json["description"] ?? '',
+      tags: (json["tags"] is List<dynamic>) ? List<String>.from(json["tags"].map((x) => x)) : null,
+    );
     
 
     Map<String, dynamic> toMap() => {
@@ -47,6 +38,7 @@ class Product {
         "price": price,
         "image": image,
         "description": description,
+        "tags": (tags == null) ? [] : List<String>.from(tags!.map((x) => x)),
     };
 
 }

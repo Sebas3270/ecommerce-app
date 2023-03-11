@@ -5,8 +5,12 @@ import 'package:ecommerce_app/common/api.dart';
 class ProductsService extends ChangeNotifier {
 
   ProductsService(){
-    getLatestProducts();
+    getInitialData();
   }
+
+  List<Product> latestProducts = [];
+  List<Product> cellphonesProducts = [];
+  List<Product> videogamesProducts = [];
 
   late Product _selectedProduct;
   Product get selectedProduct => _selectedProduct;
@@ -15,39 +19,32 @@ class ProductsService extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
-  List<Product> _searchProducts = [];
-  List<Product> get searchProductsList => _searchProducts;
-  set searchProductsList( List<Product> products ){
-    _searchProducts = products;
-    notifyListeners();
-  }
-
-  List<Product> _latestProducts = [];
-  List<Product> get latestProductsList => _latestProducts;
-  set latestProductsList( List<Product> products ){
-    _latestProducts = products;
-    notifyListeners();
-  }
+  List<Product> searchProducts = [];
 
   /// Search products for backend
-  void searchProducts( String searchTerm ) async {
+  void searchProductsByTerm( String searchTerm ) async {
     List<Product> newProducts;
     if(searchTerm.isEmpty){
       newProducts = [];
     }else{
       // newProducts = productsBase.where((product) => product.name.startsWith(searchTerm)).toList();
-      newProducts = await Api.getSearchProductsApi(searchTerm);
+      newProducts = await Api.getLatestProductsApi( searchTerm: searchTerm );
     }
-    searchProductsList = newProducts;
+    searchProducts = newProducts;
+    notifyListeners();
   }
 
-  void getLatestProducts() async {
-    List<Product> newProducts;
-    // newProducts = productsBase.sublist(productsBase.length - 5);
-    newProducts = await Api.getLatestProductsApi();
-    latestProductsList = newProducts;
+  void getInitialData() async {
+
+    List<List<Product>> productsResults = await Future.wait([
+      Api.getLatestProductsApi(),
+      Api.getLatestProductsApi( tagTerm: "cellphones" ),
+      Api.getLatestProductsApi( tagTerm: "videogames" ),
+    ]);
+    latestProducts = productsResults[0];
+    cellphonesProducts = productsResults[1];
+    videogamesProducts = productsResults[2];
+    notifyListeners();
   }
 
 }

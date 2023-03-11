@@ -54,14 +54,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.orange[600],
+                        color: Theme.of(context).primaryColor,
                       ),
                       child: IconButton(
-                        // splashColor: Colors.transparent,
-                        // highlightColor: Colors.transparent,
-                        // hoverColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
                         onPressed: () {
-                          productsService.searchProducts(searchTextController.text.trim());
+                          productsService.searchProductsByTerm(searchTextController.text.trim());
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         icon: const Icon(EvaIcons.searchOutline, color: Colors.white,)
@@ -75,8 +75,8 @@ class _SearchScreenState extends State<SearchScreen> {
             Expanded(
               child: searchTextController.text.isEmpty 
               ? const _EmptySearchWidget()
-              : productsService.searchProductsList.isNotEmpty
-                ? _SearchResultsList(products: productsService.searchProductsList)
+              : productsService.searchProducts.isNotEmpty
+                ? _SearchResultsList(products: productsService.searchProducts)
                 : const _NotFoundItems()
             ),
         ],
@@ -97,7 +97,7 @@ class _EmptySearchWidget extends StatelessWidget {
           children: const [
             Spacer(),
             Icon(
-              Icons.sports_basketball_outlined,
+              Icons.videogame_asset_outlined,
               size: 180,
               color: Colors.black12,
             ),

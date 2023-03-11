@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/services/services.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,9 @@ class LogInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final authService = Provider.of<AuthService>(context);
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +76,7 @@ class LogInScreen extends StatelessWidget {
                   fillColor: Theme.of(context).cardColor,
                   filled: true,
                   suffixIcon: const Icon(EvaIcons.lockOutline),
-                  hintText: 'Password'
+                  hintText: 'Password',
                 ),
               ),
             ),
@@ -90,19 +94,45 @@ class LogInScreen extends StatelessWidget {
                   minimumSize: const Size(double.infinity, 40), //////// HERE
                 ),
               onPressed: () async {
-                 final authService = Provider.of<AuthService>(context, listen: false);
+                 
                  final auth = await authService.login(
                     emailTextController.text.trim(),
                     passwordTextController.text.trim()
                   );
 
+                  authService.isAuthLoading = false;
+
                   if(auth){
+                    final cartService = Provider.of<CartService>(context, listen: false);
+                    final screenService = Provider.of<ScreenService>(context, listen: false);
+                    
+                    await cartService.getCart();
+                    screenService.currentScreen = 0;
+
                     Navigator.of(context).pushNamed('main');
                   }else{
-
-                  }
+                    showCupertinoDialog(
+                      context: context, 
+                      builder: (context) => CupertinoAlertDialog(
+                      title:  const Text("Log In Failed"),
+                      content: const Text("Check out your credentials and try it again"),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: const Text("Ok"),
+                          onPressed: () => Navigator.of(context).pop(),
+                        )
+                      ],
+                    ),
+                  );
+                }
               },
-              child: const Text("Sign In")
+              child: authService.isAuthLoading
+              ? const SizedBox( 
+                height: 15,
+                width: 15,
+                child: CircularProgressIndicator(color: Colors.white,)
+              )
+              : const Text("Sign In")
             )
           ),
 

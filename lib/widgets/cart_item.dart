@@ -28,8 +28,8 @@ class CartItem extends StatelessWidget {
         await cartService.deleteItem(cartItem);
       },
       background: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFFFFE6E6)
+        decoration: BoxDecoration(
+          color: Theme.of(context).hoverColor
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -70,7 +70,7 @@ class CartItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis
                     ),
                   ),
-                  Text('\$${cartItem.product.price * cartItem.quantity}',
+                  Text('\$${(cartItem.product.price * cartItem.quantity).toStringAsFixed(2)}',
                     style: TextStyle(
                       fontSize: 18
                     ),
@@ -111,7 +111,8 @@ class _QuantityRow extends StatelessWidget {
           },
           child: CircleAvatar(
             radius: 12,
-            child: Icon(Icons.remove, size: 15,),
+            child: Icon(Icons.remove, size: 15, color: Colors.white,),
+            backgroundColor: Theme.of(context).primaryColor,
           ),
         ),
         SizedBox(width: 15,),
@@ -127,7 +128,8 @@ class _QuantityRow extends StatelessWidget {
           },
           child: CircleAvatar(
             radius: 12,
-            child: Icon(Icons.add, size: 15,),
+            child: Icon(Icons.add, size: 15, color: Colors.white,),
+            backgroundColor: Theme.of(context).primaryColor,
           ),
         ),
       ],

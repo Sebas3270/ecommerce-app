@@ -3,8 +3,21 @@ import 'package:ecommerce_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(const AppProvider());
+void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    SharedPreferences.getInstance().then((SharedPreferences sp) {
+      AppTheme.setPrefs(sp);
+      runApp(const AppProvider());
+    });
+  });
+  
+}
 
 class AppProvider extends StatelessWidget {
 
@@ -48,7 +61,7 @@ class MyApp extends StatelessWidget {
         'loading': (context) => LoadingScreen(),
         'main': (context) => MainScreen(),
         'product': (context) => ProductScreen(),
-        'login':(context) => LogInScreen(),
+        'login':(context) => UnloggedMainScreen(),
       },
       theme: themeService.isDarkMode ? themeService.darkTheme : themeService.lightTheme,
     );
