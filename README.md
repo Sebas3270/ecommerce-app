@@ -1,16 +1,15 @@
-<!-- # ecommerce_app
+# Chat App
 
-A new Flutter project.
+A new Flutter app that allows you to check products, see their description, price add them to cart, log in, chage theme, etc. This app uses this [backend](https://github.com/Sebas3270/ecommerce-app-bakend) to work, you can check how the requests work, jwt authentication, and many other things with the link provided.
 
-## Getting Started
+![Ecommerce App Cover](https://user-images.githubusercontent.com/88170325/224489373-115a2273-6b11-4ec4-83bb-a3c96ac03c9a.png)
 
-This project is a starting point for a Flutter application.
+## Installation
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference. -->
+1. Install [backend project](https://github.com/Sebas3270/ecommerce-app-bakend) and run it (follow the steps in the project repository)
+2. Clone this project
+3. Install dependencies
+```
+flutter pub get
+```
+4. Run the project with ```flutter run``` or running manually on the device with your preferred IDE
