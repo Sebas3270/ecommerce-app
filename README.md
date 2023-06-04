@@ -1,4 +1,4 @@
-# Chat App
+# Ecommerce App
 
 A new Flutter app that allows you to check products, see their description, price add them to cart, log in, chage theme, etc. This app uses this [backend](https://github.com/Sebas3270/ecommerce-app-bakend) to work, you can check how the requests work, jwt authentication, and many other things with the link provided.
 
